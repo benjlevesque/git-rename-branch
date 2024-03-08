@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -60,7 +62,21 @@ func renameBranch(newName string) {
 	}
 }
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
+var versionFlag = flag.Bool("version", false, "Display version")
+
 func main() {
+	flag.Parse()
+	if *versionFlag {
+		fmt.Printf("Version %s, commit %s, built at %s\n", version, commit, date)
+		return
+	}
+
 	branchName := getCurrentBranch()
 	newBranchName := strings.Split(editValue(branchName), "\n")[0]
 	renameBranch(newBranchName)
